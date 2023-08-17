@@ -1,0 +1,22 @@
+###-- MYSQL -###
+name=mysql-connector
+connector.class=io.debezium.connector.mysql.MySqlConnector
+tasks.max=1
+database.user=root
+database.password=root
+database.hostname=mysql
+database.port=3306
+database.server.name=mysql-server
+database.history.kafka.bootstrap.servers=kafka:9092
+database.history.kafka.topic=mysql_history
+
+###-- MONGO --###
+name=mongo-sink-from-mysql
+connector.class=com.mongodb.kafka.connect.MongoSinkConnector #A classe que devemos passar pois se trata de um lib que roda em java
+task.max=1
+topics=mysql-server.fullcycle.categories
+connection.uri=mongodb://root:root@mongodb/
+database=fullcycle
+transforms=extractValue //As possiveis transformações que podem ser feitas
+transforms.extractValue.type=org.apache.kafka.connect.transforms.ExtractField$Value
+transforms.extractValue.field=after
